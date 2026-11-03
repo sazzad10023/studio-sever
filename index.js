@@ -28,28 +28,28 @@ const db = momgo_client.db("amr_studio");
 const studiocollection = db.collection("studio");
 const bookingcollection = db.collection("booking");
 
-// const verifyApi =  async(req, res, next) => {
-//  const authHeader = req.headers.authorization;
-//   console.log(authHeader)
-//   if(!authHeader){
-//     return res.status(401).send({message:"Unauthorized access"})
-//   }
+const verifyApi =  async(req, res, next) => {
+ const authHeader = req.headers.authorization;
+  console.log(authHeader)
+  if(!authHeader){
+    return res.status(401).send({message:"Unauthorized access"})
+  }
 
 
-//   const token = authHeader.split(" ")[1]
-//   if(!token){
-//     return res.status(401).send({message:"Unauthorized access"})
-//   }
+  const token = authHeader.split(" ")[1]
+  if(!token){
+    return res.status(401).send({message:"Unauthorized access"})
+  }
 
-//   const JWKS = createRemoteJWKSet(new URL('http://localhost:3000/api/auth/jwks'));
-//   try {
-//     const { payload } = await jwtVerify(token, JWKS);
-//     next();
-//   } catch (err) {
-//     console.error(err);
-//     return res.status(401).send({ message: "Unauthorized access" });
-//   }
-// };
+  const JWKS = createRemoteJWKSet(new URL('http://localhost:3000/api/auth/jwks'));
+  try {
+    const { payload } = await jwtVerify(token, JWKS);
+    next();
+  } catch (err) {
+    console.error(err);
+    return res.status(401).send({ message: "Unauthorized access" });
+  }
+};
 
 app.post( '/add-studio',verifyApi,  async (req, res)=>{
   const data = req.body
