@@ -207,21 +207,21 @@ app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
 });
 
 
-// app.get("/featured-studios", async (req, res) => {
-//   try {
-//     const studios = await studiocollection
-//       .find()
-//       .sort({ rating: -1 })
-//       .limit(6)
-//       .toArray();
+app.get("/featured-studios", async (req, res) => {
+  try {
+    const studios = await studiocollection
+      .find()
+      .sort({ rating: -1 })
+      .limit(6)
+      .toArray();
 
-//     res.send(studios);
-//   } catch (error) {
-//     res.status(500).send({
-//       message: "Failed to fetch featured studios",
-//     });
-//   }
-// });
+    res.send(studios);
+  } catch (error) {
+    res.status(500).send({
+      message: "Failed to fetch featured studios",
+    });
+  }
+});
 
 //http://localhost:8000/get-bookings
 app.get('/',(req, res) => {
