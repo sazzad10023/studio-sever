@@ -79,12 +79,12 @@ app.get("/my-studios/:email",verifyApi, async (req, res) => {
   res.send(result)
 })
 
-// app.patch( '/update-studio/:id', verifyApi, async (req, res)=>{
-//   const {id} = req.params
-//   const data = req.body
-//   const result =  await studiocollection.updateOne({_id: new ObjectId(id)},{$set:data})
-//   res.json(result)
-// })
+app.patch( '/update-studio/:id', verifyApi, async (req, res)=>{
+  const {id} = req.params
+  const data = req.body
+  const result =  await studiocollection.updateOne({_id: new ObjectId(id)},{$set:data})
+  res.json(result)
+})
 // app.delete( '/delete-studio/:id',verifyApi, async (req, res)=>{
 //   const {id} = req.params
 //   const result =  await studiocollection.deleteOne({_id: new ObjectId(id)})
