@@ -193,18 +193,18 @@ app.patch('/cancel-booking/:id', async (req, res) => {
     message: "Booking cancelled successfully"
   });
 });
-// app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
-//   await bookingcollection.updateOne(
-//     {
-//       _id: new ObjectId(req.params.id),
-//       status: "Pending",
-//     },
-//     {
-//       $set: { status: "Cancelled" },
-//   });
+app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
+  await bookingcollection.updateOne(
+    {
+      _id: new ObjectId(req.params.id),
+      status: "Pending",
+    },
+    {
+      $set: { status: "Cancelled" },
+  });
 
-//   res.send({ success: true });
-// });
+  res.send({ success: true });
+});
 
 
 // app.get("/featured-studios", async (req, res) => {
