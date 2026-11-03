@@ -90,54 +90,54 @@ app.delete( '/delete-studio/:id',verifyApi, async (req, res)=>{
   const result =  await studiocollection.deleteOne({_id: new ObjectId(id)})
   res.json(result)
 })
-// app.post('/add-booking', async (req, res) => {
-//   const data = {
-//     ...req.body,
-//     status: "Pending",
-//     createdAt: new Date()
-//   };
+app.post('/add-booking', async (req, res) => {
+  const data = {
+    ...req.body,
+    status: "Pending",
+    createdAt: new Date()
+  };
 
-//   const result = await bookingcollection.insertOne(data);
+  const result = await bookingcollection.insertOne(data);
 
-//   console.log(result);
-//   res.send(result);
-// });
-// app.post("/add-booking",verifyApi,  async (req, res) => {
-//   const { studioId, bookingDate, startTime, hours } = req.body;
+  console.log(result);
+  res.send(result);
+});
+app.post("/add-booking",verifyApi,  async (req, res) => {
+  const { studioId, bookingDate, startTime, hours } = req.body;
 
-//   const bookings = await bookingcollection.find({
-//   studioId,
-//   bookingDate,
-//   status: { $ne: "Cancelled" },
-// }).toArray();
+  const bookings = await bookingcollection.find({
+  studioId,
+  bookingDate,
+  status: { $ne: "Cancelled" },
+}).toArray();
 
-//   const toMinutes = (time) => {
-//     const [h, m] = time.split(":").map(Number);
-//     return h * 60 + m;
-//   };
+  const toMinutes = (time) => {
+    const [h, m] = time.split(":").map(Number);
+    return h * 60 + m;
+  };
 
-//   const start = toMinutes(startTime);
-//   const end = start + Number(hours) * 60;
+  const start = toMinutes(startTime);
+  const end = start + Number(hours) * 60;
 
-//   const conflict = bookings.some((b) => {
-//     const oldStart = toMinutes(b.startTime);
-//     const oldEnd = oldStart + Number(b.hours) * 60;
+  const conflict = bookings.some((b) => {
+    const oldStart = toMinutes(b.startTime);
+    const oldEnd = oldStart + Number(b.hours) * 60;
 
-//     return start < oldEnd && end > oldStart;
-//   });
+    return start < oldEnd && end > oldStart;
+  });
 
-//   if (conflict) {
-//     return res.status(409).send({ message: "Already booked!" });
-//   }
+  if (conflict) {
+    return res.status(409).send({ message: "Already booked!" });
+  }
 
-//   await bookingcollection.insertOne({
-//     ...req.body,
-//     status: "Pending",
-//     createdAt: new Date(),
-//   });
+  await bookingcollection.insertOne({
+    ...req.body,
+    status: "Pending",
+    createdAt: new Date(),
+  });
 
-//   res.send({ success: true });
-// });
+  res.send({ success: true });
+});
 
 
 // app.get("/get-bookings/:email",verifyApi,  async (req, res) => {
