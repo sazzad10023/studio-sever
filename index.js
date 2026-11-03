@@ -140,59 +140,59 @@ app.post("/add-booking",verifyApi,  async (req, res) => {
 });
 
 
-// app.get("/get-bookings/:email",verifyApi,  async (req, res) => {
-//   const bookings = await bookingcollection.find({
-//     email: decodeURIComponent(req.params.email),
-//   }).sort({ createdAt: -1 }).toArray();
+app.get("/get-bookings/:email",verifyApi,  async (req, res) => {
+  const bookings = await bookingcollection.find({
+    email: decodeURIComponent(req.params.email),
+  }).sort({ createdAt: -1 }).toArray();
 
-//   res.send(bookings);
-// });
-// app.get('/get-bookings/:email', async (req, res) => {
-//   const { email } = req.params;
+  res.send(bookings);
+});
+app.get('/get-bookings/:email', async (req, res) => {
+  const { email } = req.params;
 
-//   const result = await bookingcollection
-//     .find({
-//       email: email,
-//       status: { $ne: "Cancelled" }
-//     })
-//     .sort({ createdAt: -1 })
-//     .toArray();
+  const result = await bookingcollection
+    .find({
+      email: email,
+      status: { $ne: "Cancelled" }
+    })
+    .sort({ createdAt: -1 })
+    .toArray();
 
-//   console.log(result);
-//   res.send(result);
-// });
-// app.patch('/cancel-booking/:id', async (req, res) => {
-//   const { id } = req.params;
+  console.log(result);
+  res.send(result);
+});
+app.patch('/cancel-booking/:id', async (req, res) => {
+  const { id } = req.params;
 
-//   if (!ObjectId.isValid(id)) {
-//     return res.status(400).send({
-//       message: "Invalid booking ID"
-//     });
-//   }
+  if (!ObjectId.isValid(id)) {
+    return res.status(400).send({
+      message: "Invalid booking ID"
+    });
+  }
 
-//   const result = await bookingcollection.updateOne(
-//     {
-//       _id: new ObjectId(id),
-//       status: "Pending"
-//     },
-//     {
-//       $set: {
-//         status: "Cancelled"
-//       }
-//     }
-//   );
+  const result = await bookingcollection.updateOne(
+    {
+      _id: new ObjectId(id),
+      status: "Pending"
+    },
+    {
+      $set: {
+        status: "Cancelled"
+      }
+    }
+  );
 
-//   if (result.matchedCount === 0) {
-//     return res.status(404).send({
-//       message: "Pending booking not found"
-//     });
-//   }
+  if (result.matchedCount === 0) {
+    return res.status(404).send({
+      message: "Pending booking not found"
+    });
+  }
 
-//   res.send({
-//     success: true,
-//     message: "Booking cancelled successfully"
-//   });
-// });
+  res.send({
+    success: true,
+    message: "Booking cancelled successfully"
+  });
+});
 // app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
 //   await bookingcollection.updateOne(
 //     {
