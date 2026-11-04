@@ -38,7 +38,7 @@ const verifyApi = async (req, res, next) => {
     return res.status(401).send({ message: "Unauthorized access" });
   }
 
-  const JWKS = createRemoteJWKSet(new URL("http://localhost:3000/api/auth/jwks"));
+  const JWKS = createRemoteJWKSet(new URL(`${process.env.CLIENT_URL}/api/auth/jwks`));
   try {
     const { payload } = await jwtVerify(token, JWKS);
     next();
@@ -96,18 +96,18 @@ app.delete("/delete-studio/:id", verifyApi, async (req, res) => {
   const result = await studiocollection.deleteOne({ _id: new ObjectId(id) });
   res.json(result);
 });
-app.post("/add-booking", async (req, res) => {
-  const data = {
-    ...req.body,
-    status: "Pending",
-    createdAt: new Date(),
-  };
+// app.post("/add-booking", async (req, res) => {
+//   const data = {
+//     ...req.body,
+//     status: "Pending",
+//     createdAt: new Date(),
+//   };
 
-  const result = await bookingcollection.insertOne(data);
+//   const result = await bookingcollection.insertOne(data);
 
-  console.log(result);
-  res.send(result);
-});
+//   console.log(result);
+//   res.send(result);
+// });
 app.post("/add-booking", verifyApi, async (req, res) => {
   const { studioId, bookingDate, startTime, hours } = req.body;
 
@@ -157,21 +157,21 @@ app.get("/get-bookings/:email", verifyApi, async (req, res) => {
 
   res.send(bookings);
 });
-app.get("/get-bookings/:email", async (req, res) => {
-  const { email } = req.params;
+// app.get("/get-bookings/:email", async (req, res) => {
+//   const { email } = req.params;
 
-  const result = await bookingcollection
-    .find({
-      email: email,
-      status: { $ne: "Cancelled" },
-    })
-    .sort({ createdAt: -1 })
-    .toArray();
+//   const result = await bookingcollection
+//     .find({
+//       email: email,
+//       status: { $ne: "Cancelled" },
+//     })
+//     .sort({ createdAt: -1 })
+//     .toArray();
 
-  console.log(result);
-  res.send(result);
-});
-app.patch("/cancel-booking/:id", async (req, res) => {
+//   console.log(result);
+//   res.send(result);
+// });
+app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
   const { id } = req.params;
 
   if (!ObjectId.isValid(id)) {
@@ -203,19 +203,19 @@ app.patch("/cancel-booking/:id", async (req, res) => {
     message: "Booking cancelled successfully",
   });
 });
-app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
-  await bookingcollection.updateOne(
-    {
-      _id: new ObjectId(req.params.id),
-      status: "Pending",
-    },
-    {
-      $set: { status: "Cancelled" },
-    },
-  );
+// app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
+//   await bookingcollection.updateOne(
+//     {
+//       _id: new ObjectId(req.params.id),
+//       status: "Pending",
+//     },
+//     {
+//       $set: { status: "Cancelled" },
+//     },
+//   );
 
-  res.send({ success: true });
-});
+//   res.send({ success: true });
+// });
 
 app.get("/featured-studios", async (req, res) => {
   try {
