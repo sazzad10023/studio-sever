@@ -217,9 +217,24 @@ app.patch("/cancel-booking/:id", verifyApi, async (req, res) => {
 //   res.send({ success: true });
 // });
 
+// app.get("/featured-studios", async (req, res) => {
+//   try {
+//     const studios = await studiocollection.find().sort({ rating: -1 }).limit(6).toArray();
+
+//     res.send(studios);
+//   } catch (error) {
+//     res.status(500).send({
+//       message: "Failed to fetch featured studios",
+//     });
+//   }
+// });
 app.get("/featured-studios", async (req, res) => {
   try {
-    const studios = await studiocollection.find().sort({ rating: -1 }).limit(6).toArray();
+    const studios = await studiocollection
+      .find()
+      .sort({ _id: -1 })
+      .limit(6)
+      .toArray();
 
     res.send(studios);
   } catch (error) {
